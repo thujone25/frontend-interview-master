@@ -18,8 +18,8 @@ export default {
     },
   },
   mutations: {
-    setMoviesList(state: any, payload: Array<Movie>) {
-      state.movies = payload.sort((a: Movie, b: Movie) => +a.Year.split('–')[0] - +b.Year.split('–')[0]);
+    setMoviesList(state: any, payload: Movie[]) {
+      state.movies = payload;
     },
     setSpecificMovie(state: any, payload: MovieDetail) {
       state.movie = payload;

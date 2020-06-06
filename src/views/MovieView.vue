@@ -7,8 +7,8 @@
       <div class="movie-view__details-cont">
         <table class="movie-view__table">
           <tr v-for="row in detailsTable"
-              :key="row.name">
-            <td class="movie-view__table-cell">{{ row.name }}</td>
+              :key="row.label">
+            <td class="movie-view__table-cell">{{ row.label }}</td>
             <td class="movie-view__table-cell">{{ row.value }}</td>
           </tr>
         </table>
@@ -32,13 +32,13 @@ export default Vue.extend({
     },
     detailsTable(): DetailTable[] {
       return [
-        { name: 'Title:', value: this.movie.Title || '--' },
-        { name: 'Type:', value: this.movie.Type || '--' },
-        { name: 'Year:', value: this.movie.Year || '--' },
-        { name: 'Rating:', value: this.movie.Rated || '--' },
-        { name: 'Released:', value: this.movie.Released || '--' },
-        { name: 'Production:', value: this.movie.Production || '--' },
-        { name: 'Plot:', value: this.movie.Plot || '--' },
+        { label: 'Title:', value: this.movie.Title || '--' },
+        { label: 'Type:', value: this.movie.Type || '--' },
+        { label: 'Year:', value: this.movie.Year || '--' },
+        { label: 'Rated:', value: this.movie.Rated || '--' },
+        { label: 'Released:', value: this.movie.Released || '--' },
+        { label: 'Production:', value: this.movie.Production || '--' },
+        { label: 'Plot:', value: this.movie.Plot || '--' },
       ];
     },
   },
