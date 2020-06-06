@@ -6,12 +6,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions, mapState } from 'vuex';
 import MovieService from '@/services/MovieService';
 
 export default Vue.extend({
   name: 'MovieView',
+  methods: {
+    ...mapActions('MoviesStore', ['getSpecificMovie']),
+  },
   async created() {
-    MovieService.movieService.getSpecificMovie(/* TODO */ '273b9080', /* TODO */ 'tt0372784');
+    this.getSpecificMovie('tt0372784');
   },
 });
 </script>

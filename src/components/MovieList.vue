@@ -10,28 +10,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import MovieService from '@/services/MovieService';
-import MovieListItem from './MovieListItem.vue';
-import { Movie } from '../services/types';
+import { mapActions, mapState } from 'vuex';
+import MovieListItem from '@/components/MovieListItem.vue';
 
 export default Vue.extend({
   name: 'MovieList',
-  data() {
-    return {
-      movies: [] as Movie[],
-    };
-  },
-  async created() {
-    await this.loadMovies();
-  },
-  methods: {
-    async loadMovies() {
-      const result = await MovieService.movieService.getMovieList(/* TODO */ '273b9080');
-      this.movies = result.result;
-    },
-  },
   components: {
     MovieListItem,
+  },
+  computed: {
+    ...mapState('MoviesStore', ['movies']),
+  },
+  methods: {
+    ...mapActions('MoviesStore', ['getAllMovies']),
+  },
+  async created() {
+    await this.getAllMovies();
   },
 });
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <img alt="Batman logo" src="../assets/logo.png" />
-    <HelloWorld msg="Hello #TODO#, which batman movie do you want to see?"/>
+    <img alt="Batman logo" src="~@/assets/logo.png" />
+    <HelloWorld :msg="`Hello ${user.name}, which batman movie do you want to see?`"/>
     <MovieList />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import { mapState } from 'vuex';
 import HelloWorld from '@/components/HelloWorld.vue';
 import MovieList from '@/components/MovieList.vue';
 
@@ -16,6 +16,9 @@ export default {
   components: {
     HelloWorld,
     MovieList,
+  },
+  computed: {
+    ...mapState(['user']),
   },
 };
 </script>

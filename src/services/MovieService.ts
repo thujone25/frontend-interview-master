@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { MovieDetail } from './types';
+import { MovieDetail } from '@/services/types';
 
 class MovieService {
   private axiosInstance: AxiosInstance;
@@ -37,8 +37,4 @@ class MovieService {
   }
 }
 
-const movieService = new MovieService();
-
-export default {
-  movieService,
-};
+export default new MovieService();
