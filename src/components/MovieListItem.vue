@@ -1,12 +1,16 @@
 <template>
   <div class="hello">
-    {{ movie.Title }}
+    <p>
+      <router-link :to="movieLink"
+                   class="hello">
+        {{ movie.Title }} | {{ movie.Year }}
+      </router-link>
+    </p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue';
-
 import { Movie } from '@/services/types';
 
 export default Vue.extend({
@@ -15,6 +19,11 @@ export default Vue.extend({
     movie: {
       type: Object,
     } as PropOptions<Movie>,
+  },
+  computed: {
+    movieLink(): any {
+      return { name: 'MovieView', params: { movieId: this.movie.imdbID } };
+    },
   },
 });
 </script>

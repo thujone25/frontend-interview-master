@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import HelloWorld from '@/components/HelloWorld.vue';
 import MovieList from '@/components/MovieList.vue';
 
@@ -19,6 +19,12 @@ export default {
   },
   computed: {
     ...mapState(['user']),
+  },
+  methods: {
+    ...mapMutations('MoviesStore', ['clearStore']),
+  },
+  beforeDestroy() {
+    this.clearStore();
   },
 };
 </script>

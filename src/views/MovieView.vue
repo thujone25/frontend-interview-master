@@ -1,25 +1,86 @@
 <template>
   <div class="movie-view">
-    <h1>This is the movie view</h1>
+    <h1>{{ movie.Title }}</h1>
+    <div class="movie-view__details-wrapper">
+      <div :style="posterStyle"
+           class="movie-view__poster"></div>
+      <div class="movie-view__details-cont">
+        <table class="movie-view__table">
+          <tr v-for="row in detailsTable"
+              :key="row.name">
+            <td class="movie-view__table-cell">{{ row.name }}</td>
+            <td class="movie-view__table-cell">{{ row.value }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
+import { DetailTable } from '@/services/types';
 import MovieService from '@/services/MovieService';
 
 export default Vue.extend({
   name: 'MovieView',
+  computed: {
+    ...mapState('MoviesStore', ['movie']),
+    posterStyle(): any {
+      return { backgroundImage: `url(${this.movie.Poster})` };
+    },
+    detailsTable(): DetailTable[] {
+      return [
+        { name: 'Title:', value: this.movie.Title || '--' },
+        { name: 'Type:', value: this.movie.Type || '--' },
+        { name: 'Year:', value: this.movie.Year || '--' },
+        { name: 'Rating:', value: this.movie.Rated || '--' },
+        { name: 'Released:', value: this.movie.Released || '--' },
+        { name: 'Production:', value: this.movie.Production || '--' },
+        { name: 'Plot:', value: this.movie.Plot || '--' },
+      ];
+    },
+  },
   methods: {
     ...mapActions('MoviesStore', ['getSpecificMovie']),
+    ...mapMutations('MoviesStore', ['clearStore']),
   },
   async created() {
-    this.getSpecificMovie('tt0372784');
+    this.getSpecificMovie(this.$route.params.movieId);
+  },
+  beforeDestroy() {
+    this.clearStore();
   },
 });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped>
+.movie-view__details-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.movie-view__poster {
+  display: block;
+  width: 200px;
+  max-height: 400px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.movie-view__details-cont {
+  display: block;
+  width: calc(100% - 200px);
+}
+.movie-view__table {
+  text-align: left;
+  table-layout: fixed;
+}
+.movie-view__table-cell:first-of-type {
+  padding-right: 5px;
+  font-weight: bold;
+}
 </style>
