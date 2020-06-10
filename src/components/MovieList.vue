@@ -13,12 +13,7 @@
       :key="movie.imdbID"
       :movie="movie"
       />
-    <div v-if="showLoadMoreBtn"
-         class="movie-list__more-btn-wrapper">
-      <button :disabled="progressActive"
-              class="movie-list__more-btn"
-              @click="loadMoreMovies">Load more</button>
-    </div>
+    <MovieLoadMoreBtn v-if="showLoadMoreBtn" />
   </div>
 </template>
 
@@ -26,19 +21,19 @@
 import Vue from 'vue';
 import { mapActions, mapState, mapMutations } from 'vuex';
 import MovieListItem from '@/components/MovieListItem.vue';
+import MovieLoadMoreBtn from '@/components/LoadMoreBtn.vue';
 
 export default Vue.extend({
   name: 'MovieList',
   components: {
     MovieListItem,
+    MovieLoadMoreBtn,
   },
   computed: {
     ...mapState('MoviesStore', [
       'movies',
       'totalMovies',
       'chosenFilter',
-      'currentPage',
-      'progressActive',
     ]),
     showLoadMoreBtn(): boolean {
       return this.movies.length < this.totalMovies;
@@ -48,13 +43,8 @@ export default Vue.extend({
     ...mapActions('MoviesStore', ['getMovieList']),
     ...mapMutations('MoviesStore', [
       'setMoviesFilter',
-      'setMoviesCurrentPage',
       'clearMoviesList',
     ]),
-    async loadMoreMovies() {
-      this.setMoviesCurrentPage(this.currentPage += 1);
-      await this.getMovieList();
-    },
     async catchFilter(e: any) {
       this.setMoviesFilter(e.target.value);
       this.clearMoviesList();
