@@ -1,10 +1,16 @@
 <template>
-  <div class="hello">
+  <div class="movie-list">
     <MovieListItem
       v-for="movie in movies"
       :key="movie.imdbID"
       :movie="movie"
       />
+    <div v-if="showLoadMoreBtn"
+         class="movie-list__more-btn-wrapper">
+      <button :disabled="loadProgress"
+              class="movie-list__more-btn"
+              @click="loadMoreMovies">Load more</button>
+    </div>
   </div>
 </template>
 
@@ -18,14 +24,29 @@ export default Vue.extend({
   components: {
     MovieListItem,
   },
+  data() {
+    return {
+      currentPage: 1,
+      loadProgress: false,
+    };
+  },
   computed: {
-    ...mapState('MoviesStore', ['movies']),
+    ...mapState('MoviesStore', ['movies', 'totalMovies']),
+    showLoadMoreBtn(): boolean {
+      return this.movies.length < this.totalMovies;
+    },
   },
   methods: {
-    ...mapActions('MoviesStore', ['getAllMovies']),
+    ...mapActions('MoviesStore', ['getMovieList']),
+    async loadMoreMovies() {
+      this.loadProgress = true;
+      this.currentPage += 1;
+      await this.getMovieList(this.currentPage);
+      this.loadProgress = false;
+    },
   },
   async created() {
-    await this.getAllMovies();
+    await this.getMovieList();
   },
 });
 </script>
